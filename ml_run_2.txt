@@ -1,0 +1,20 @@
+name: ML Run
+# on mentions a trigger for the workflow
+on: 
+    push: # when a push is made to the main branch of the repository
+      branches:
+           - master
+jobs:
+  ml_run:
+    runs-on: ubuntu-latest # runs the workflow on the latest ubuntu version
+    
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # uses the checkout action to checkout the code
+
+      - name: Docker Image Build
+        run: docker build -t linear-reg . # builds docker image from current dir (.) and names it (-t) linear-reg
+
+      - name: Run Docker Container # runs container of built docker image and removes it after it is finished (--rm)
+        run: docker run --rm linear-reg
