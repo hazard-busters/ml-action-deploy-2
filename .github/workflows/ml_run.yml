@@ -7,15 +7,14 @@ on:
 jobs:
   ml_run:
     runs-on: ubuntu-latest # runs the workflow on the latest ubuntu version
-    container:
-      image: jupyter/scipy-notebook:latest # uses the scipy-notebook image from the jupyter repository
-      options: --user root # runs the workflow as the root user
-
+    
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 # uses the checkout action to checkout the code
 
-      - name: run script
-        run: 
-          python ml_example.py
+      - name: Docker Image Build
+        run: docker build -t linear-reg . # builds docker image from current dir (.) and names it (-t) linear-reg
+
+      - name: Run Docker Container # runs container of built docker image and removes it after it is finished (--rm)
+        run: docker run --rm linear-reg
